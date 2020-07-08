@@ -1,0 +1,21 @@
+---
+title: "Learn data visualization with `ggplot2`"
+output: 
+  pdf_document:
+    includes:
+      in_header: header.tex
+    latex_engine: xelatex
+---
+Learn data visualization with `ggplot2`:
+```{r,message=F,include=FALSE}
+library(tidyverse)
+library(MASS)
+```
+
+```{r}
+library(tidyverse)
+library(MASS)
+library(conflicted)
+conflict_prefer("select","dyplr")
+```
+

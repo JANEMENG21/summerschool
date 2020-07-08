@@ -1,0 +1,216 @@
+---
+title: "Lesson 2"
+author: "jane"
+date: "2020/7/7"
+output: html_document
+---
+```{r}
+as.character(5/6)
+as.numeric(5/6)
+5/6 == as.numeric(as.character(5/6))
+print(5/6,digit=10)
+```
+digit only works with numeric
+
+xaringan
+```{r}
+pi
+0.45-3*0.15
+```
+Rounding errors tend to accumulate in long calculations.
+```{r}
+(0.5-0.3)==(0.3-0.1)
+all.equal(0.5-0.3,0.3-0.1)
+```
+FOr statistics, the precision is not in the first ptiority.
+
+# DATA Structure
+# Vector:
+vector is a sequence of values, __all of the same type__
+```{r}
+s<-c(1,2,3,4,"as","2","x")
+is.vector(s)
+s
+s[1]
+s[4]
+s[-3]
+m<-vector(length=5);m#empty vector
+m[5]<-5;m
+#essence of R
+x<-c(1,2,3)
+y<-c(2,3,4)
+x+y
+```
+
+## RECTCLING
+```{r}
+#calculation
+x<-c(1,2,3,4)
+x+c(4,5)
+x ^ c(0,1)
+2*x
+
+#Comparision
+(x>3) & (x<6)
+identical(c(0.5-0.3,0.3-0.1),c(0.3-0.1),(0.5-0.3))
+all.equal(c(0.5-0.3,0.3-0.1),c(0.3-0.1,0.5-0.3))
+```
+## Adressing
+```{r}
+x[c(2,3)]
+x[c(-1,-2)]#use index
+x[x>2]
+y<--x;y
+y[x<2]
+a<-vector(length=10)
+x[a]
+x[!a]# when the length of the boolean differs from x, then will recycle
+places<-which(x>2)
+places
+```
+
+## Named Components
+```{r}
+names(x)<-c("v1","v2","fred");x
+which(names(x)=="fred")
+```
+```{r}
+date()
+```
+
+## Function on vectors
+```{r}
+any()
+all()
+```
+
+# Array
+```{r}
+x<-c(7,8,10,45)
+x.arr<-array(x,dim=c(2,2));x.arr
+x<-c(x,7,8)
+x.arr<-array(x,dim=c(2,2,2));x.arr#high dimension!
+```
+```{r}
+is.vector(x.arr)
+str(x.arr)
+attributes(x.arr)# the attributes of obkect
+rowSums(x.arr)
+```
+_.csv is a kind of plain text that separated by comma_
+
+_coefficients(lm(Median~.))_ REmain to be explored
+
+_complete.cases(data)_ return a vector of nrows, if the row of data have NAN or nNA, then return FALSE
+__ggplot2__
+usually when it comes to regression, plotting the observed values and fitted values, we usually add _geom_abline()_ to see whether the regression model fits well enough.
+
+P.s The incomes' data follow right long tail distribution
+
+# Mathematical Programming
+# Matrix--colomns  of same types
+```{r}
+factory<-matrix(c(1,2,3,4),ncol=2);factory
+factory2<-matrix(c(1,2,3,4),ncol=2,byrow=TRUE);factory2
+six.sevens<-matrix(rep(7,6),ncol=3);six.sevens
+factory%*%six.sevens
+```
+## matrices and vectors
+```{r}
+output <- c(10,20)
+factory %*% output
+output %*% factory
+```
+
+```{r}
+t(factory)
+det(factory)
+diag(factory)
+diag(c(1,2))
+diag(4)
+```
+## Inverting
+```{r}
+factory^-1
+solve(factory)# truely invert, solve a linear system factory*factory's invert = E
+solve(factory,diag(2))
+```
+### Why's it called "solve"" anyway?
+
+Solving the linear system $\mathbf{A}\vec{x} = \vec{b}$ for $\vec{x}$:
+
+```{r}
+available <- c(1600,70)
+solve(factory,available)
+factory %*% solve(factory,available)
+```
+
+### Names in matrices
+rownames()
+colnames()
+
+### apply
+apply(data,1/2,func)
+
+### List
+not all the samw tyoe
+```{r}
+my_list<-list("happy",7,TRUE);my_list
+
+```
+my_list[]:sub list, still list,cannot calculate
+my_list[[]]:the elements
+### chop off
+### Naming
+```{r}
+names(my_list)<-c("a","b","c")
+my_list[1]
+my_list[[1]]
+```
+### Use $ to chooose variables
+```{r}
+my.distribution[["family"]]
+my.distribution$family
+```
+
+### Names in lists
+```{r}
+my_distribution<-list(family="gaussian",mean=7,sd=1,isSymmetric=TRUE)
+my_distribution$add<-"y";my_distribution
+my_distribution$add<-NULL;my_distribution
+```
+### Key-Value pairs
+
+# Dataframes
+no matrix multiplying dataframes (cannot apply matrices multiply )
+```{r}
+a.matrix <- matrix(c(35,8,10,4),nrow=2)
+colnames(a.matrix) <- c("v1","v2")
+a.matrix
+a.matrix[,"v1"]  # Try a.matrix$v1 and see what happens
+```
+
+
+```{r}
+a.data.frame <- data.frame(a.matrix,logicals=c(TRUE,FALSE))
+a.data.frame
+a.data.frame$v1
+a.data.frame[,"v1"]
+a.data.frame[1,]
+a.data.frame[,1]
+colMeans(a.data.frame)
+```
+
+### rbind
+We can add rows or columns to an array or data-frame with `rbind()` and `cbind()`, but be careful about forced type conversions
+```{r}
+rbind(a.data.frame,list(v1=-3,v2=-5,logicals=TRUE))
+rbind(a.data.frame,c(3,4,6))#6 is not a boolean variable, thus the last col becomes a numeric one
+```
+
+
+### composed by many vectors(different types)
+thus when it comes to regression, multiple kinds of variables and binary variable can be easily used in the model.
+### e.g. Eigenstuff
+### class()
+object oriented function
